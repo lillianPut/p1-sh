@@ -39,6 +39,7 @@ get_args (int argc, char **argv, FILE **script)
         case 'b':
           *script = fopen (optarg, "r");
           break;
+
         default:
           return false;
         }
