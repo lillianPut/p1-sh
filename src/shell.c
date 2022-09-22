@@ -30,6 +30,8 @@ shell (FILE *input)
 		echo(&buffer[5]);
 	  if (strncmp(buffer, "pwd", 3) == 0)
 		pwd();
+    if (stncmp(buffer, "cd", 2) == 0)
+    chdir(&buffer[3]);
     }
   printf ("\n");
   hash_destroy ();

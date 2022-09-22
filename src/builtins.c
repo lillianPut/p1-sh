@@ -78,10 +78,3 @@ which (char *cmdline)
 {
   return 0;
 }
-
-// Will change the directory into the given path. 
-int
-cd (char *path)
-{
-  return 0;
-}
