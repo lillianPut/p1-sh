@@ -67,6 +67,13 @@ unset (char *key)
   return 0;
 }
 
+int
+quit (void)
+{
+  printf ("\n");
+  exit (0);
+}
+
 // Given a string of commands, find their location(s) in the $PATH global
 // variable. If the string begins with "-a", print all locations, not just
 // the first one.
@@ -76,5 +83,25 @@ unset (char *key)
 int
 which (char *cmdline)
 {
-  return 0;
+  char *str = strtok (cmdline, " ");
+  str = strtok (NULL, " \n");
+
+  if (strstr (str, "cmd") != NULL || strstr (str, "echo") != NULL
+      || strstr (str, "pwd") != NULL || strstr (str, "cd") != NULL
+      || strstr (str, "which") != NULL || strstr (str, "export"))
+    {
+      printf ("%s: dukesh built-in command\n", str);
+    }
+  else
+    {
+      char directory[100];
+
+      char *path = getcwd (directory, sizeof (directory));
+      if (access (path, X_OK) == 0)
+        {
+          
+        }
+    }
+
+    return 0;
 }
