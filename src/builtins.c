@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+// used to store the current directory.
 // Given a message as input, print it to the screen followed by a
 // newline ('\n'). If the message contains the two-byte escape sequence
 // "\\n", print a newline '\n' instead. No other escape sequence is
@@ -53,8 +55,8 @@ export (char *kvpair)
 int
 pwd (void)
 {
-  char cwd[50];
-  if (getcwd (cwd, sizeof(cwd)) != NULL)
+  char cwd[100];
+  if (getcwd (cwd, sizeof(cwd)) != NULL) 
 	printf("%s\n", cwd);
   return 0;
 }
@@ -83,14 +85,17 @@ quit (void)
 int
 which (char *cmdline)
 {
-  char *str = strtok (cmdline, " ");
+  char *tmp = strdup (cmdline);
+  char *str = strtok (tmp, " ");
   str = strtok (NULL, " \n");
+  if (str == NULL) 
+	return 1;
 
   if (strstr (str, "cmd") != NULL || strstr (str, "echo") != NULL
       || strstr (str, "pwd") != NULL || strstr (str, "cd") != NULL
       || strstr (str, "which") != NULL || strstr (str, "export"))
     {
-      printf ("%s: dukesh built-in command\n", str);
+	  printf ("%s: dukesh built-in command\n", str);
     }
   else
     {
@@ -110,9 +115,10 @@ which (char *cmdline)
         }
       else
         {
+		  free (tmp);
           return 1;
         }
     }
-
+  free (tmp);
   return 0;
 }
