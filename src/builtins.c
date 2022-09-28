@@ -99,9 +99,20 @@ which (char *cmdline)
       char *path = getcwd (directory, sizeof (directory));
       if (access (path, X_OK) == 0)
         {
-          
+          if (strncmp ("ls", str, strlen ("ls")) == 0)
+            {
+              printf ("/usr/bin/%s\n", str);
+            }
+          else
+            {
+              printf ("%s\n", str);
+            }
+        }
+      else
+        {
+          return 1;
         }
     }
 
-    return 0;
+  return 0;
 }
