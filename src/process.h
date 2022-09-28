@@ -8,5 +8,7 @@
 //   - determining if a command is a built-in or executable
 //   - running a single command in a second process
 //   - running a pair of commands that are connected with a pipe
+int ls (char *);
+int head (void);
 
 #endif

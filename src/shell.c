@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "builtins.h"
 #include "hash.h"
@@ -14,6 +15,7 @@ shell (FILE *input)
   hash_init (100);
   hash_insert ("?", "0");
   char buffer[MAXLENGTH];
+  
   while (1)
     {
       // Print the cursor and get the next command entered
@@ -21,18 +23,31 @@ shell (FILE *input)
       memset (buffer, 0, sizeof (buffer));
       if (fgets (buffer, MAXLENGTH, input) == NULL)
         break;
+	
+	char *tmp = strdup (buffer);
+	char *first = strtok (tmp, " ");
+	char *sec = strtok (NULL, " ");
+	char *arg[2];
+	arg[0] = first;
+	arg[1] = sec;
 
       if (input != stdin)
         printf ("%s", buffer);
-	  if (strncmp(buffer, "quit", 4) == 0) 
+    
+	if (strncmp(first, "quit", 4) == 0) 
 		break;
-	  if (strncmp(buffer, "echo", 4) == 0)
-		echo(&buffer[5]);
-	  if (strncmp(buffer, "pwd", 3) == 0)
+	else if (strncmp(arg[0], "echo", 4) == 0)
+		echo(arg[1]);
+	else if (strncmp(arg[0], "cd", 2) == 0)
+        chdir (arg[1]);
+	else if (strncmp(arg[0], "pwd", 3) == 0)
 		pwd();
-    if (strncmp(buffer, "cd", 2) == 0)
-    chdir(&buffer[3]);
+	else if (strncmp(arg[0], "ls", 2) == 0)
+		ls(arg[1]);
+	
+	free (tmp);
     }
   printf ("\n");
   hash_destroy ();
 }
+
