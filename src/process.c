@@ -1,6 +1,10 @@
 #include <stddef.h>
 #include <assert.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <spawn.h>
+#include <stdio.h>
+#include <stdlib.h>
 // The contents of this file are up to you, but they should be related to
 // running separate processes. It is recommended that you have functions
 // for:
@@ -23,8 +27,11 @@ ls (char *path)
 int 
 head (char *file)
 {
-	printf("#\n# Simple Test Makefile\n");
-	printf("# Mike Lam, James Madison University, August 2016\n");
-	printf("#\n# This version of the Makefile includes support for building a test suite. The");
-	return 0;
+	const char *path = "./bin/head";
+	char *const argv[] = {"head", file, NULL};
+	pid_t child = 0;
+	posix_spawn_file_actions_t action;
+    posix_spawn_file_actions_init (&action);
+    int status = posix_spawn (&child, path, &action, NULL, argv, NULL);
+	return child;
 }

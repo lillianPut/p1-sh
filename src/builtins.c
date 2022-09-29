@@ -18,7 +18,7 @@ int
 echo (char *message)
 {
   if (message != NULL)
-	message[strlen(message) -1] = '\0';
+	message[strlen(message)] = '\0';
 
   char *token = strtok(message, "\\n");
   do 

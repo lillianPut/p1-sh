@@ -24,32 +24,33 @@ shell (FILE *input)
       if (fgets (buffer, MAXLENGTH, input) == NULL)
         break;
 	
-	char *tmp = strdup (buffer);
-	char *first = strtok (tmp, " ");
-	char *sec = strtok (NULL, " ");
-	char *arg[2];
-	arg[0] = first;
-	arg[1] = sec;
+	  char *tmp = strdup (buffer);
+	  char *first = strtok (tmp, " ");
+	  char *sec = strtok (NULL, " \n");
+	  char *arg[2];
+	  arg[0] = first;
+	  arg[1] = sec;
 
       if (input != stdin)
         printf ("%s", buffer);
     
-	if (strncmp(first, "quit", 4) == 0) 
+	  if (strncmp(first, "quit", 4) == 0) 
 		break;
-	else if (strncmp(arg[0], "echo", 4) == 0)
+	  else if (strncmp(arg[0], "echo", 4) == 0)
 		echo(arg[1]);
-	else if (strncmp(arg[0], "cd", 2) == 0)
+	  else if (strncmp(arg[0], "cd", 2) == 0)
         chdir (arg[1]);
-	else if (strncmp(arg[0], "pwd", 3) == 0)
+	  else if (strncmp(arg[0], "pwd", 3) == 0)
 		pwd();
-	else if (strncmp(arg[0], "ls", 2) == 0)
+	  else if (strncmp(arg[0], "ls", 2) == 0)
 		ls(arg[1]);
-	else if (strncmp(arg[0], "which", 5) == 0)
+	  else if (strncmp(arg[0], "which", 5) == 0)
 		which(buffer);
+	  else if (strstr(arg[0], "head") == 0)
+		head(arg[1]);
 	
-	free (tmp);
+	  free (tmp);
     }
   printf ("\n");
   hash_destroy ();
 }
-
