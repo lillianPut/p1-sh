@@ -6,6 +6,11 @@ static void usage (void);
 int
 main (int argc, char *argv[], char *envp[])
 {
+  if (argc == 1)
+  {
+    char *s = getenv("PATH");
+    printf("PATH=%s\n", s);
+  }
   return EXIT_SUCCESS;
 }
 
