@@ -19,8 +19,10 @@ echo (char *message)
 {
   if (message != NULL)
 	message[strlen(message)] = '\0';
-
+  
   char *token = strtok(message, "\\n");
+  if (strncmp (token, "$", 1) == 0)
+	return 0;
   do 
   {
 	printf("%s\n", token);
