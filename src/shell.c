@@ -42,13 +42,10 @@ shell (FILE *input)
         chdir (arg[1]);
 	  else if (strncmp(arg[0], "pwd", 3) == 0)
 		pwd();
-	  else if (strncmp(arg[0], "ls", 2) == 0)
-		ls(arg[1]);
 	  else if (strncmp(arg[0], "which", 5) == 0)
 		which(buffer);
-	  else if (strstr(arg[0], "head") == 0)
-		head(arg[1]);
-	
+	  else if (strncmp(arg[0], "export", 6) == 0)
+		export (arg[1]);
 	  free (tmp);
     }
   printf ("\n");

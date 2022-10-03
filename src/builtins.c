@@ -19,10 +19,15 @@ echo (char *message)
 {
   if (message != NULL)
 	message[strlen(message)] = '\0';
-  
+  char *key;
   char *token = strtok(message, "\\n");
-  if (strncmp (token, "$", 1) == 0)
+  if (strncmp (token, "?", 1) == 0) {
+	return 1;
+  } else if (strncmp (token, "=${", 3) == 0) {
+	key = hash_find("NUM");
+	printf("N=%s\n", key);
 	return 0;
+  }
   do 
   {
 	printf("%s\n", token);
@@ -50,6 +55,7 @@ export (char *kvpair)
   token = strtok(temp, "=");
   token1 = strtok(NULL, "=");
   hash_insert(token, token1);
+  free (temp);
   return 0;
 }
 
@@ -68,7 +74,9 @@ pwd (void)
 int
 unset (char *key)
 {
-  return 0;
+  if (hash_remove (key) == 0)
+	 return 0;
+  return 1;
 }
 
 int
