@@ -1,8 +1,10 @@
+
 #include <string.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "hash.h"
 
 // used to store the current directory.
 // Given a message as input, print it to the screen followed by a
@@ -19,15 +21,17 @@ echo (char *message)
 {
   if (message != NULL)
 	message[strlen(message)] = '\0';
-  char *key;
   char *token = strtok(message, "\\n");
-  if (strncmp (token, "?", 1) == 0) {
-	return 1;
-  } else if (strncmp (token, "=${", 3) == 0) {
-	key = hash_find("NUM");
-	printf("N=%s\n", key);
-	return 0;
-  }
+  char* key;
+  if (strstr (token, "${NUM}") != NULL) {
+	  key = hash_find("NUM");
+	  if (key == NULL) {
+		printf("N=\n");
+		return 0;
+	  }
+      printf("N=%s\n", key);
+	  return 0;
+  } else {
   do 
   {
 	printf("%s\n", token);
@@ -35,7 +39,9 @@ echo (char *message)
   } while (token != NULL);
 
   return 0;
+  }
 }
+
 
 // Given a key-value pair string (e.g., "alpha=beta"), insert the mapping
 // into the global hash table (hash_insert ("alpha", "beta")).
@@ -46,7 +52,7 @@ int
 export (char *kvpair)
 {
   char *test = strstr(kvpair, "=");
-  if (!kvpair|| !test) 
+  if (!kvpair || !test) 
   {
 	 return 1;
   }
@@ -55,7 +61,7 @@ export (char *kvpair)
   token = strtok(temp, "=");
   token1 = strtok(NULL, "=");
   hash_insert(token, token1);
-  free (temp);
+  free(temp);
   return 0;
 }
 
@@ -74,7 +80,7 @@ pwd (void)
 int
 unset (char *key)
 {
-  if (hash_remove (key) == 0)
+ if (hash_remove (key) == 0)
 	 return 0;
   return 1;
 }
