@@ -13,13 +13,13 @@ static void usage (void);
 int
 main (int argc, char *argv[])
 {
-  FILE *script  = NULL;
-  if (!get_args (argc, argv, &script)) 
-	usage();
+  FILE *script = NULL;
+  if (!get_args (argc, argv, &script))
+    usage ();
   else if (script == NULL)
-	shell (stdin);
+    shell (stdin);
   else
-	shell(script);
+    shell (script);
   return EXIT_SUCCESS;
 }
 
@@ -39,7 +39,6 @@ get_args (int argc, char **argv, FILE **script)
         case 'b':
           *script = fopen (optarg, "r");
           break;
-
         default:
           return false;
         }

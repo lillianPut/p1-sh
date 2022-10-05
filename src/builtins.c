@@ -1,10 +1,9 @@
-
-#include <string.h>
+#include "hash.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
-#include "hash.h"
 
 // used to store the current directory.
 // Given a message as input, print it to the screen followed by a
@@ -19,49 +18,55 @@
 int
 echo (char *message)
 {
-  if (message != NULL)
-	message[strlen(message)] = '\0';
-  char *token = strtok(message, "\\n");
-  char* key;
-  if (strstr (token, "${NUM}") != NULL) {
-	  key = hash_find("NUM");
-	  if (key == NULL) {
-		printf("N=\n");
-		return 0;
-	  }
-      printf("N=%s\n", key);
-	  return 0;
-  } else {
-  do 
-  {
-	printf("%s\n", token);
-	token = strtok(NULL, "\\n");
-  } while (token != NULL);
+  message[strlen (message)] = '\0';
+  char *token = strtok (message, "\\n");
+  char *key;
+  if (strstr (token, "$?") != NULL)
+    {
+      return 0;
+    }
+  if (strstr (token, "${NUM}") != NULL)
+    {
+      key = hash_find ("NUM");
+      if (key == NULL)
+        {
+          printf ("N=\n");
+          return 0;
+        }
+      printf ("N=%s\n", key);
+      return 0;
+    }
+  else
+    {
+      do
+        {
+          printf ("%s\n", token);
+          token = strtok (NULL, "\\n");
+        }
+      while (token != NULL);
 
-  return 0;
-  }
+      return 0;
+    }
 }
-
 
 // Given a key-value pair string (e.g., "alpha=beta"), insert the mapping
 // into the global hash table (hash_insert ("alpha", "beta")).
 //
 // Returns 0 on success, 1 for an invalid pair string (kvpair is NULL or
 // there is no '=' in the string).
-int
-export (char *kvpair)
+int export(char *kvpair)
 {
-  char *test = strstr(kvpair, "=");
-  if (!kvpair || !test) 
-  {
-	 return 1;
-  }
+  char *test = strstr (kvpair, "=");
+  if (!kvpair || !test)
+    {
+      return 1;
+    }
   char *temp = strdup (kvpair);
   char *token, *token1;
-  token = strtok(temp, "=");
-  token1 = strtok(NULL, "=");
-  hash_insert(token, token1);
-  free(temp);
+  token = strtok (temp, "=");
+  token1 = strtok (NULL, "=");
+  hash_insert (token, token1);
+  free (temp);
   return 0;
 }
 
@@ -70,8 +75,8 @@ int
 pwd (void)
 {
   char cwd[100];
-  if (getcwd (cwd, sizeof(cwd)) != NULL) 
-	printf("%s\n", cwd);
+  if (getcwd (cwd, sizeof (cwd)) != NULL)
+    printf ("%s\n", cwd);
   return 0;
 }
 
@@ -80,8 +85,8 @@ pwd (void)
 int
 unset (char *key)
 {
- if (hash_remove (key) == 0)
-	 return 0;
+  if (hash_remove (key) == 0)
+    return 0;
   return 1;
 }
 
@@ -104,14 +109,14 @@ which (char *cmdline)
   char *tmp = strdup (cmdline);
   char *str = strtok (tmp, " ");
   str = strtok (NULL, " \n");
-  if (str == NULL) 
-	return 1;
+  if (str == NULL)
+    return 1;
 
   if (strstr (str, "cmd") != NULL || strstr (str, "echo") != NULL
       || strstr (str, "pwd") != NULL || strstr (str, "cd") != NULL
       || strstr (str, "which") != NULL || strstr (str, "export"))
     {
-	  printf ("%s: dukesh built-in command\n", str);
+      printf ("%s: dukesh built-in command\n", str);
     }
   else
     {
@@ -131,7 +136,7 @@ which (char *cmdline)
         }
       else
         {
-		  free (tmp);
+          free (tmp);
           return 1;
         }
     }
