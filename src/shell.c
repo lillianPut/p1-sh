@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "builtins.h"
 #include "hash.h"
@@ -8,6 +9,8 @@
 
 // No command line can be more than 100 characters
 #define MAXLENGTH 100
+
+int chdir (const char *path);
 
 void
 shell (FILE *input)
@@ -33,21 +36,26 @@ shell (FILE *input)
 
       if (input != stdin)
         printf ("%s", buffer);
-    
 	  if (strncmp(first, "quit", 4) == 0) 
 		break;
-	  else if (strncmp(arg[0], "echo", 4) == 0)
-		echo(arg[1]);
-	  else if (strncmp(arg[0], "cd", 2) == 0)
+	  else if (strncmp (arg[0], "echo", 4) == 0)
+		echo (arg[1]);
+	  else if (strncmp (arg[0], "cd", 2) == 0)
         chdir (arg[1]);
-	  else if (strncmp(arg[0], "pwd", 3) == 0)
-		pwd();
-	  else if (strncmp(arg[0], "which", 5) == 0)
-		which(buffer);
-	  else if (strncmp(arg[0], "export", 6) == 0)
+	  else if (strncmp (arg[0], "pwd", 3) == 0)
+		pwd ();
+	  else if (strncmp (arg[0], "which", 5) == 0)
+		which (buffer);
+	  else if (strncmp (arg[0], "export", 6) == 0)
 		export (arg[1]);
+	  else if (strstr (arg[0], "ls") != NULL)
+		system (buffer);
+	  else if (strstr (arg[0], "head") != NULL)
+		system (buffer);
+	  else if (strstr (arg[0], "env") != NULL)
+		system (buffer);
 	  free (tmp);
     }
-  printf ("\n");
   hash_destroy ();
+  printf ("\n");
 }

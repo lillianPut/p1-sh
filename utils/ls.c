@@ -16,12 +16,7 @@ int parse_args (int argc, char **argv, bool *file_all, bool *sizes, char **fname
 int
 main (int argc, char *argv[])
 {
-  printf ("$");
-  for (int i = 0; i < argc; i++)
-    {
-      printf (" %s", argv[i]);
-    }
-
+ 
   bool a = false;
   bool s = false;
   DIR *dir = NULL;
@@ -110,7 +105,7 @@ parse_args (int argc, char **argv, bool *a, bool *s, char **fname) {
               break;
        }
   }
-  if (*fname == NULL) {
+ if (*fname == NULL) {
     char cw[100];
     if (getcwd(cw, sizeof(cw)) != NULL) {
       if (argc == 2)
