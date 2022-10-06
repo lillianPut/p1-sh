@@ -23,7 +23,7 @@ echo (char *message)
   char *key;
   if (strstr (token, "$?") != NULL)
     {
-      return 0;
+      return 1;
     }
   if (strstr (token, "${NUM}") != NULL)
     {
